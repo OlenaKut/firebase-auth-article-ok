@@ -4,11 +4,17 @@ import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import { auth, db, logout } from "./firebase";
 import { query, collection, getDocs, where } from "firebase/firestore";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 function Dashboard() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState("");
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const fetchUserName = async () => {
     try {
@@ -31,16 +37,28 @@ function Dashboard() {
   }, [user, loading]);
 
   return (
-    <div className="dashboard">
-      <div className="dashboard__container">
-        Logged in as
-        <div>{name}</div>
-        <div>{user?.email}</div>
-        <button className="dashboard__btn" onClick={logout}>
-          Logout
-        </button>
-      </div>
-    </div>
+    <>
+      <Button variant="primary" onClick={handleShow}>
+        LogOut
+      </Button>
+      <Modal show={show} onHide={handleClose}>
+        <div className="">
+          <div className="dashboard__container">
+            Logged in as
+            <div>{name}</div>
+            <div>{user?.email}</div>
+            <button className="dashboard__btn" onClick={logout}>
+              Logout
+            </button>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 }
 
