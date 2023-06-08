@@ -38,9 +38,10 @@ function Dashboard() {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+       <Button variant="primary" onClick={handleShow}>
         LogOut
       </Button>
+      {user && ` Hello, ${name}`}
       <Modal show={show} onHide={handleClose}>
         <div className="">
           <div className="dashboard__container">
